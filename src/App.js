@@ -5,12 +5,12 @@ import GasStation from "./components/GasStation";
 import Location from "./components/Location";
 
 class App extends Component {
-  state = { gasStations: null };
+  state = { gasStations: null, loading: false };
 
   searchGasStations = () => {
     const server = process.env.REACT_APP_API_SERVER;
 
-    this.setState({ gasStations: null }, () => {
+    this.setState({ gasStations: null, loading: true }, () => {
       navigator.geolocation.getCurrentPosition(position => {
         axios
           .get(
@@ -19,7 +19,7 @@ class App extends Component {
             }`
           )
           .then(res => {
-            this.setState({ gasStations: res.data });
+            this.setState({ gasStations: res.data, loading: false });
           })
           .catch(e => console.log(e));
       });
@@ -27,11 +27,13 @@ class App extends Component {
   };
 
   render() {
-    const { gasStations } = this.state;
+    const { gasStations, loading } = this.state;
     return (
       <div className="App container">
         <h2>Encontre postos de gasolina próximos da sua localização</h2>
-        <button onClick={this.searchGasStations}>Buscar</button>
+        <button onClick={this.searchGasStations} className="btn-large">
+          Buscar <i className="material-icons right">my_location</i>
+        </button>
         {gasStations ? (
           <div>
             <Location
@@ -43,6 +45,10 @@ class App extends Component {
             {gasStations.postos.map(gasStation => (
               <GasStation key={gasStation.lat} gasStation={gasStation} />
             ))}
+          </div>
+        ) : loading ? (
+          <div className="progress ">
+            <div className="indeterminate" />
           </div>
         ) : null}
       </div>
