@@ -30,10 +30,12 @@ class App extends Component {
     const { gasStations, loading } = this.state;
     return (
       <div className="App container">
-        <h2>Encontre postos de gasolina próximos da sua localização</h2>
-        <button onClick={this.searchGasStations} className="btn-large">
-          Buscar <i className="material-icons right">my_location</i>
-        </button>
+        <h3 className="center">Encontre postos de gasolina próximos</h3>
+        <div className="center" style={{ marginBottom: 36 }}>
+          <button onClick={this.searchGasStations} className="btn-large">
+            Buscar <i className="material-icons right">my_location</i>
+          </button>
+        </div>
         {gasStations ? (
           <div>
             <Location
@@ -47,8 +49,10 @@ class App extends Component {
             ))}
           </div>
         ) : loading ? (
-          <div className="progress ">
-            <div className="indeterminate" />
+          <div className="container" style={{ marginTop: 72 }}>
+            <div className="progress ">
+              <div className="indeterminate" />
+            </div>
           </div>
         ) : null}
       </div>
